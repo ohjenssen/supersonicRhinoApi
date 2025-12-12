@@ -16,6 +16,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         time: {
             type: Sequelize.DATE
+        },
+        userID: {
+            type: Sequelize.INTEGER
         }
     }, {
         tableName: 'sets',

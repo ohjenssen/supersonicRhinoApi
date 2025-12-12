@@ -16,6 +16,7 @@ exports.create = (req, res) => {
         weight: req.body.weight,
         repetitions: req.body.repetitions,
         exerciseID: req.body.exerciseID,
+        userID: req.body.userID
     };
 
     // Save Set in the database
