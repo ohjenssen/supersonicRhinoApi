@@ -16,7 +16,8 @@ exports.create = (req, res) => {
         weight: req.body.weight,
         repetitions: req.body.repetitions,
         exerciseID: req.body.exerciseID,
-        userID: req.body.userID
+        userID: req.body.userID,
+        time: new Date()
     };
 
     // Save Set in the database
@@ -35,9 +36,9 @@ exports.create = (req, res) => {
 // Retrieve all sets from the database
 exports.findAll = (req, res) => {
     const setID = req.query.setID;
-    var condition = setID ? { setID: { [Op.like]: `%${setID}` } } : null;
+    // var condition = setID ? { setID: { [Op.like]: `%${setID}` } } : null;
 
-    Set.findAll({ where: condition})
+    Set.findAll({ where: setID ? { setID: { [Op.like]: `%${setID}` } } : null})
         .then(data => {
             res.send(data);
         })
@@ -70,6 +71,23 @@ exports.findOne = (req, res) => {
         });
 };
 
+exports.findByExerciseID = (req, res) => {
+    const exerciseID = req.params.id;
+
+    Set.findAll({
+        where: { exerciseID: exerciseID },
+        order: [['time', 'DESC']]  
+    })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || `Error retrieving Sets for exercise ${exerciseID}`
+            });
+        });
+}
+
 // Update a Set by the id of the request
 exports.update = (req, res) => {
     const id = req.params.id;
@@ -96,7 +114,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    const set = req.params.id;
+    const id = req.params.id;
 
     Set.destroy({
         where: { setID: id }

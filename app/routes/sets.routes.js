@@ -12,6 +12,9 @@ module.exports = app => {
     // Get a single set
     router.get("/:id", sets.findOne);
 
+    // Get all sets by an exercise
+    router.get("/exercise/:id", sets.findByExerciseID);
+
     //  Update a signle set
     router.put("/:id", sets.update);
 
